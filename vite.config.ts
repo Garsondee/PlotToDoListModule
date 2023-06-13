@@ -15,8 +15,7 @@ export default defineConfig({
     rollupOptions: {
       input: "src/ts/module.ts",
       output: {
-        dir: undefined,
-        file: "dist/scripts/module.js",
+        file: "dist/module.js",
         format: "es",
       },
     },
@@ -24,7 +23,7 @@ export default defineConfig({
   plugins: [
     updateModuleManifestPlugin(),
     scss({
-      output: "dist/style.css",
+      output: false,
       sourceMap: true,
       watch: ["src/styles/*.scss"],
     }),
@@ -43,16 +42,16 @@ function updateModuleManifestPlugin(): Plugin {
     name: "update-module-manifest",
     async writeBundle(): Promise<void> {
       const packageContents = JSON.parse(
-        await fsPromises.readFile("./package.json", "utf-8")
+          await fsPromises.readFile("./package.json", "utf-8")
       ) as Record<string, unknown>;
       const version = moduleVersion || (packageContents.version as string);
       const manifestContents: string = await fsPromises.readFile(
-        "src/module.json",
-        "utf-8"
+          "src/module.json",
+          "utf-8"
       );
       const manifestJson = JSON.parse(manifestContents) as Record<
-        string,
-        unknown
+          string,
+          unknown
       >;
       manifestJson["version"] = version;
       if (githubProject) {
@@ -60,13 +59,13 @@ function updateModuleManifestPlugin(): Plugin {
         manifestJson["manifest"] = `${baseUrl}/latest/download/module.json`;
         if (githubTag) {
           manifestJson[
-            "download"
-          ] = `${baseUrl}/download/${githubTag}/module.zip`;
+              "download"
+              ] = `${baseUrl}/download/${githubTag}/module.zip`;
         }
       }
       await fsPromises.writeFile(
-        "dist/module.json",
-        JSON.stringify(manifestJson, null, 4)
+          "dist/module.json",
+          JSON.stringify(manifestJson, null, 4)
       );
     },
   };

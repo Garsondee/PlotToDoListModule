@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/foundryvtt-manifest.json",
   "id": "foundry-module-ts",
-  "title": "Typescript Template Module",
-  "description": "A template module using Typescript. You should change name, title, and description in module.json.",
+  "title": "Plot / Story / Campaign Management - To Do List",
+  "description": "The goal of this module is to present a different approach to keeping track of player progress as a continual TODO list.",
   "version": "1.0.0",
   "packs": [],
   "system": [],

@@ -1,25 +1,18 @@
-// Do not remove this import. If you do Vite will think your styles are dead
-// code and not include them in the build output.
-import "../styles/style.scss";
-import DogBrowser from "./apps/dogBrowser";
-import { moduleId } from "./constants";
-import { MyModule } from "./types";
+Hooks.once("ready", async function () {
+  console.log("Plot - TODO List - Ready!");
 
-let module: MyModule;
+  // Create a new Foundry VTT document journal entry which is blank with the name "TODO List"
+  let journalEntry = await JournalEntry.create({ name: "TODO List" });
 
-Hooks.once("init", () => {
-  console.log(`Initializing ${moduleId}`);
+  // Move the journal entry to the "Plot" folder
+    // @ts-ignore
+  await journalEntry.update({ folder: "Plot" });
 
-  module = (game as Game).modules.get(moduleId) as MyModule;
-  module.dogBrowser = new DogBrowser();
-});
+  // Log the created journal entry
+  console.log("Created Journal Entry: ", journalEntry);
 
-Hooks.on("renderActorDirectory", (_: Application, html: JQuery) => {
-  const button = $(
-    `<button class="cc-sidebar-button" type="button">🐶</button>`
-  );
-  button.on("click", () => {
-    module.dogBrowser.render(true);
-  });
-  html.find(".directory-header .action-buttons").append(button);
+  // If the journal entry already exists do nothing
+    if (journalEntry) {
+    return;
+    }
 });
